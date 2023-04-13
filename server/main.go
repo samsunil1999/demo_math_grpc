@@ -7,10 +7,10 @@ import (
 	"net/http"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
-	"github.com/sam-explorex/demo_math_grpc/server/pkg"
 	"google.golang.org/grpc"
 
 	pb "github.com/sam-explorex/demo_math_grpc/proto"
+	"github.com/sam-explorex/demo_math_grpc/server/service"
 )
 
 const (
@@ -25,7 +25,7 @@ func main() {
 		mux := runtime.NewServeMux()
 
 		// register
-		pb.RegisterGreetServiceHandlerServer(context.Background(), mux, &pkg.HelloServer{})
+		pb.RegisterGreetServiceHandlerServer(context.Background(), mux, &service.HelloServer{})
 
 		// http server
 		err := http.ListenAndServe("localhost"+httpPort, mux)
@@ -45,7 +45,7 @@ func main() {
 	// creating the grpc server
 	grpcServer := grpc.NewServer()
 
-	pb.RegisterGreetServiceServer(grpcServer, &pkg.HelloServer{})
+	pb.RegisterGreetServiceServer(grpcServer, &service.HelloServer{})
 	log.Printf("server started at %v", lis.Addr())
 	err = grpcServer.Serve(lis)
 	if err != nil {
