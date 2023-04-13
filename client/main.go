@@ -20,9 +20,9 @@ func main() {
 	}
 	defer conn.Close()
 
-	client := pb.NewGreetServiceClient(conn)
+	client := pb.NewMathServiceClient(conn)
 
-	res, err := client.SayHello(context.Background(), &pb.NoParam{})
+	res, err := client.Add(context.Background(), &pb.Request{})
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
 	}

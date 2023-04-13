@@ -25,7 +25,7 @@ func main() {
 		mux := runtime.NewServeMux()
 
 		// register
-		pb.RegisterGreetServiceHandlerServer(context.Background(), mux, &service.HelloServer{})
+		pb.RegisterMathServiceHandlerServer(context.Background(), mux, &service.MathServer{})
 
 		// http server
 		err := http.ListenAndServe("localhost"+httpPort, mux)
@@ -45,7 +45,7 @@ func main() {
 	// creating the grpc server
 	grpcServer := grpc.NewServer()
 
-	pb.RegisterGreetServiceServer(grpcServer, &service.HelloServer{})
+	pb.RegisterMathServiceServer(grpcServer, &service.MathServer{})
 	log.Printf("server started at %v", lis.Addr())
 	err = grpcServer.Serve(lis)
 	if err != nil {
