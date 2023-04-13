@@ -9,6 +9,7 @@ import (
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 
+	"github.com/sam-explorex/demo_math_grpc/database"
 	pb "github.com/sam-explorex/demo_math_grpc/proto"
 	"github.com/sam-explorex/demo_math_grpc/server/service"
 )
@@ -19,6 +20,9 @@ const (
 )
 
 func main() {
+	database.ConnectDatabase()
+	database.MigrateDatabase()
+
 	// go routine to run REST api server simultaneously
 	go func() {
 		// mux
