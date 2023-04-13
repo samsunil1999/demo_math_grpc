@@ -43,5 +43,5 @@ message Request{
 
 message Response{
     string message = 1;
-    int64 result = 2;
+    float result = 2;
 }
