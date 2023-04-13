@@ -21,6 +21,8 @@ const _ = grpc.SupportPackageIsVersion7
 const (
 	MathService_Add_FullMethodName      = "/math_service.MathService/Add"
 	MathService_Subtract_FullMethodName = "/math_service.MathService/Subtract"
+	MathService_Multiply_FullMethodName = "/math_service.MathService/Multiply"
+	MathService_Divide_FullMethodName   = "/math_service.MathService/Divide"
 )
 
 // MathServiceClient is the client API for MathService service.
@@ -29,6 +31,8 @@ const (
 type MathServiceClient interface {
 	Add(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error)
 	Subtract(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error)
+	Multiply(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error)
+	Divide(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error)
 }
 
 type mathServiceClient struct {
@@ -57,12 +61,32 @@ func (c *mathServiceClient) Subtract(ctx context.Context, in *Request, opts ...g
 	return out, nil
 }
 
+func (c *mathServiceClient) Multiply(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error) {
+	out := new(Response)
+	err := c.cc.Invoke(ctx, MathService_Multiply_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mathServiceClient) Divide(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error) {
+	out := new(Response)
+	err := c.cc.Invoke(ctx, MathService_Divide_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MathServiceServer is the server API for MathService service.
 // All implementations must embed UnimplementedMathServiceServer
 // for forward compatibility
 type MathServiceServer interface {
 	Add(context.Context, *Request) (*Response, error)
 	Subtract(context.Context, *Request) (*Response, error)
+	Multiply(context.Context, *Request) (*Response, error)
+	Divide(context.Context, *Request) (*Response, error)
 	mustEmbedUnimplementedMathServiceServer()
 }
 
@@ -75,6 +99,12 @@ func (UnimplementedMathServiceServer) Add(context.Context, *Request) (*Response,
 }
 func (UnimplementedMathServiceServer) Subtract(context.Context, *Request) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Subtract not implemented")
+}
+func (UnimplementedMathServiceServer) Multiply(context.Context, *Request) (*Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Multiply not implemented")
+}
+func (UnimplementedMathServiceServer) Divide(context.Context, *Request) (*Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Divide not implemented")
 }
 func (UnimplementedMathServiceServer) mustEmbedUnimplementedMathServiceServer() {}
 
@@ -125,6 +155,42 @@ func _MathService_Subtract_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _MathService_Multiply_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Request)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MathServiceServer).Multiply(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MathService_Multiply_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MathServiceServer).Multiply(ctx, req.(*Request))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MathService_Divide_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Request)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MathServiceServer).Divide(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MathService_Divide_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MathServiceServer).Divide(ctx, req.(*Request))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // MathService_ServiceDesc is the grpc.ServiceDesc for MathService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -139,6 +205,14 @@ var MathService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Subtract",
 			Handler:    _MathService_Subtract_Handler,
+		},
+		{
+			MethodName: "Multiply",
+			Handler:    _MathService_Multiply_Handler,
+		},
+		{
+			MethodName: "Divide",
+			Handler:    _MathService_Divide_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

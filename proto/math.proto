@@ -20,6 +20,20 @@ service MathService{
             body: "*"
         };
     }
+
+    rpc Multiply(Request) returns (Response){
+        option (google.api.http) = {
+            post: "/v1/multiply"
+            body: "*"
+        };
+    }
+
+    rpc Divide(Request) returns (Response){
+        option (google.api.http) = {
+            post: "/v1/divide"
+            body: "*"
+        };
+    }
 }
 
 message Request{
