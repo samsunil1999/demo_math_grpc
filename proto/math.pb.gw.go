@@ -2,11 +2,11 @@
 // source: math.proto
 
 /*
-Package proto is a reverse proxy.
+Package __ is a reverse proxy.
 
 It translates gRPC into RESTful JSON APIs.
 */
-package proto
+package __
 
 import (
 	"context"
@@ -31,8 +31,8 @@ var _ = runtime.String
 var _ = utilities.NewDoubleArray
 var _ = metadata.Join
 
-func request_GreetService_SayHello_0(ctx context.Context, marshaler runtime.Marshaler, client GreetServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq NoParam
+func request_MathService_Add_0(ctx context.Context, marshaler runtime.Marshaler, client MathServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq Request
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -43,13 +43,13 @@ func request_GreetService_SayHello_0(ctx context.Context, marshaler runtime.Mars
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := client.SayHello(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.Add(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_GreetService_SayHello_0(ctx context.Context, marshaler runtime.Marshaler, server GreetServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq NoParam
+func local_request_MathService_Add_0(ctx context.Context, marshaler runtime.Marshaler, server MathServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq Request
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -60,18 +60,52 @@ func local_request_GreetService_SayHello_0(ctx context.Context, marshaler runtim
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := server.SayHello(ctx, &protoReq)
+	msg, err := server.Add(ctx, &protoReq)
 	return msg, metadata, err
 
 }
 
-// RegisterGreetServiceHandlerServer registers the http handlers for service GreetService to "mux".
-// UnaryRPC     :call GreetServiceServer directly.
+func request_MathService_Subtract_0(ctx context.Context, marshaler runtime.Marshaler, client MathServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq Request
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := client.Subtract(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_MathService_Subtract_0(ctx context.Context, marshaler runtime.Marshaler, server MathServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq Request
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.Subtract(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+// RegisterMathServiceHandlerServer registers the http handlers for service MathService to "mux".
+// UnaryRPC     :call MathServiceServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
-// Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterGreetServiceHandlerFromEndpoint instead.
-func RegisterGreetServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server GreetServiceServer) error {
+// Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterMathServiceHandlerFromEndpoint instead.
+func RegisterMathServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server MathServiceServer) error {
 
-	mux.Handle("POST", pattern_GreetService_SayHello_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_MathService_Add_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -79,12 +113,12 @@ func RegisterGreetServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/math_service.GreetService/SayHello", runtime.WithHTTPPathPattern("/v1/hello"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/math_service.MathService/Add", runtime.WithHTTPPathPattern("/v1/add"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_GreetService_SayHello_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_MathService_Add_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -92,16 +126,41 @@ func RegisterGreetServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 			return
 		}
 
-		forward_GreetService_SayHello_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_MathService_Add_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("POST", pattern_MathService_Subtract_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/math_service.MathService/Subtract", runtime.WithHTTPPathPattern("/v1/subtract"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_MathService_Subtract_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_MathService_Subtract_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
 	return nil
 }
 
-// RegisterGreetServiceHandlerFromEndpoint is same as RegisterGreetServiceHandler but
+// RegisterMathServiceHandlerFromEndpoint is same as RegisterMathServiceHandler but
 // automatically dials to "endpoint" and closes the connection when "ctx" gets done.
-func RegisterGreetServiceHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
+func RegisterMathServiceHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
 	conn, err := grpc.DialContext(ctx, endpoint, opts...)
 	if err != nil {
 		return err
@@ -121,41 +180,63 @@ func RegisterGreetServiceHandlerFromEndpoint(ctx context.Context, mux *runtime.S
 		}()
 	}()
 
-	return RegisterGreetServiceHandler(ctx, mux, conn)
+	return RegisterMathServiceHandler(ctx, mux, conn)
 }
 
-// RegisterGreetServiceHandler registers the http handlers for service GreetService to "mux".
+// RegisterMathServiceHandler registers the http handlers for service MathService to "mux".
 // The handlers forward requests to the grpc endpoint over "conn".
-func RegisterGreetServiceHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
-	return RegisterGreetServiceHandlerClient(ctx, mux, NewGreetServiceClient(conn))
+func RegisterMathServiceHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
+	return RegisterMathServiceHandlerClient(ctx, mux, NewMathServiceClient(conn))
 }
 
-// RegisterGreetServiceHandlerClient registers the http handlers for service GreetService
-// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "GreetServiceClient".
-// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "GreetServiceClient"
+// RegisterMathServiceHandlerClient registers the http handlers for service MathService
+// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "MathServiceClient".
+// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "MathServiceClient"
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
-// "GreetServiceClient" to call the correct interceptors.
-func RegisterGreetServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client GreetServiceClient) error {
+// "MathServiceClient" to call the correct interceptors.
+func RegisterMathServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client MathServiceClient) error {
 
-	mux.Handle("POST", pattern_GreetService_SayHello_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_MathService_Add_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/math_service.GreetService/SayHello", runtime.WithHTTPPathPattern("/v1/hello"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/math_service.MathService/Add", runtime.WithHTTPPathPattern("/v1/add"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_GreetService_SayHello_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_MathService_Add_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_GreetService_SayHello_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_MathService_Add_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("POST", pattern_MathService_Subtract_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/math_service.MathService/Subtract", runtime.WithHTTPPathPattern("/v1/subtract"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_MathService_Subtract_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_MathService_Subtract_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -163,9 +244,13 @@ func RegisterGreetServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 }
 
 var (
-	pattern_GreetService_SayHello_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "hello"}, ""))
+	pattern_MathService_Add_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "add"}, ""))
+
+	pattern_MathService_Subtract_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "subtract"}, ""))
 )
 
 var (
-	forward_GreetService_SayHello_0 = runtime.ForwardResponseMessage
+	forward_MathService_Add_0 = runtime.ForwardResponseMessage
+
+	forward_MathService_Subtract_0 = runtime.ForwardResponseMessage
 )

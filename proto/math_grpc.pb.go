@@ -4,7 +4,7 @@
 // - protoc             v3.21.12
 // source: math.proto
 
-package proto
+package __
 
 import (
 	context "context"
@@ -19,89 +19,126 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	GreetService_SayHello_FullMethodName = "/math_service.GreetService/SayHello"
+	MathService_Add_FullMethodName      = "/math_service.MathService/Add"
+	MathService_Subtract_FullMethodName = "/math_service.MathService/Subtract"
 )
 
-// GreetServiceClient is the client API for GreetService service.
+// MathServiceClient is the client API for MathService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type GreetServiceClient interface {
-	SayHello(ctx context.Context, in *NoParam, opts ...grpc.CallOption) (*HelloResponse, error)
+type MathServiceClient interface {
+	Add(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error)
+	Subtract(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error)
 }
 
-type greetServiceClient struct {
+type mathServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewGreetServiceClient(cc grpc.ClientConnInterface) GreetServiceClient {
-	return &greetServiceClient{cc}
+func NewMathServiceClient(cc grpc.ClientConnInterface) MathServiceClient {
+	return &mathServiceClient{cc}
 }
 
-func (c *greetServiceClient) SayHello(ctx context.Context, in *NoParam, opts ...grpc.CallOption) (*HelloResponse, error) {
-	out := new(HelloResponse)
-	err := c.cc.Invoke(ctx, GreetService_SayHello_FullMethodName, in, out, opts...)
+func (c *mathServiceClient) Add(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error) {
+	out := new(Response)
+	err := c.cc.Invoke(ctx, MathService_Add_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// GreetServiceServer is the server API for GreetService service.
-// All implementations must embed UnimplementedGreetServiceServer
+func (c *mathServiceClient) Subtract(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error) {
+	out := new(Response)
+	err := c.cc.Invoke(ctx, MathService_Subtract_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// MathServiceServer is the server API for MathService service.
+// All implementations must embed UnimplementedMathServiceServer
 // for forward compatibility
-type GreetServiceServer interface {
-	SayHello(context.Context, *NoParam) (*HelloResponse, error)
-	mustEmbedUnimplementedGreetServiceServer()
+type MathServiceServer interface {
+	Add(context.Context, *Request) (*Response, error)
+	Subtract(context.Context, *Request) (*Response, error)
+	mustEmbedUnimplementedMathServiceServer()
 }
 
-// UnimplementedGreetServiceServer must be embedded to have forward compatible implementations.
-type UnimplementedGreetServiceServer struct {
+// UnimplementedMathServiceServer must be embedded to have forward compatible implementations.
+type UnimplementedMathServiceServer struct {
 }
 
-func (UnimplementedGreetServiceServer) SayHello(context.Context, *NoParam) (*HelloResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SayHello not implemented")
+func (UnimplementedMathServiceServer) Add(context.Context, *Request) (*Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Add not implemented")
 }
-func (UnimplementedGreetServiceServer) mustEmbedUnimplementedGreetServiceServer() {}
+func (UnimplementedMathServiceServer) Subtract(context.Context, *Request) (*Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Subtract not implemented")
+}
+func (UnimplementedMathServiceServer) mustEmbedUnimplementedMathServiceServer() {}
 
-// UnsafeGreetServiceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to GreetServiceServer will
+// UnsafeMathServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to MathServiceServer will
 // result in compilation errors.
-type UnsafeGreetServiceServer interface {
-	mustEmbedUnimplementedGreetServiceServer()
+type UnsafeMathServiceServer interface {
+	mustEmbedUnimplementedMathServiceServer()
 }
 
-func RegisterGreetServiceServer(s grpc.ServiceRegistrar, srv GreetServiceServer) {
-	s.RegisterService(&GreetService_ServiceDesc, srv)
+func RegisterMathServiceServer(s grpc.ServiceRegistrar, srv MathServiceServer) {
+	s.RegisterService(&MathService_ServiceDesc, srv)
 }
 
-func _GreetService_SayHello_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(NoParam)
+func _MathService_Add_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Request)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GreetServiceServer).SayHello(ctx, in)
+		return srv.(MathServiceServer).Add(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: GreetService_SayHello_FullMethodName,
+		FullMethod: MathService_Add_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GreetServiceServer).SayHello(ctx, req.(*NoParam))
+		return srv.(MathServiceServer).Add(ctx, req.(*Request))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// GreetService_ServiceDesc is the grpc.ServiceDesc for GreetService service.
+func _MathService_Subtract_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Request)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MathServiceServer).Subtract(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MathService_Subtract_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MathServiceServer).Subtract(ctx, req.(*Request))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// MathService_ServiceDesc is the grpc.ServiceDesc for MathService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var GreetService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "math_service.GreetService",
-	HandlerType: (*GreetServiceServer)(nil),
+var MathService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "math_service.MathService",
+	HandlerType: (*MathServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "SayHello",
-			Handler:    _GreetService_SayHello_Handler,
+			MethodName: "Add",
+			Handler:    _MathService_Add_Handler,
+		},
+		{
+			MethodName: "Subtract",
+			Handler:    _MathService_Subtract_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

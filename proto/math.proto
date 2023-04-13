@@ -1,41 +1,33 @@
 syntax = "proto3";
 
-option go_package = "./proto";
+option go_package = "./";
 
 package math_service;
 
 import "google/api/annotations.proto";
 
-service GreetService{
-    rpc SayHello(NoParam) returns (HelloResponse){
+service MathService{
+    rpc Add(Request) returns (Response){
         option (google.api.http) = {
-            post: "/v1/hello"
+            post: "/v1/add"
             body: "*"
         };
-    } //Unary API
+    }
 
-    // rpc SayHelloServerStreaming(Namelist) returns (stream HelloResponse); // Server side streaming
-
-    // rpc SayHelloClientStreaming(stream HelloRequest) returns (MessageList); // Client side streaming
-
-    // rpc SayHelloBiderectionalStreaming(stream HelloRequest) returns (stream HelloResponse); // Bidirectional streaming
+    rpc Subtract(Request) returns (Response){
+        option (google.api.http) = {
+            post: "/v1/subtract"
+            body: "*"
+        };
+    }
 }
 
-message NoParam{}
+message Request{
+    int64 value_a = 1;
+    int64 value_b = 2;
+}
 
-message HelloResponse{
+message Response{
     string message = 1;
+    int64 result = 2;
 }
-
-// message HelloRequest{
-//     string name = 1;
-// }
-
-
-// message Namelist {
-//     repeated string names = 1;
-// }
-
-// message MessageList {
-//     repeated string messages = 1;
-// }
